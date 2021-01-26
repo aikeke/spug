@@ -18,6 +18,7 @@ class SSH:
             'port': port,
             'username': username,
             'password': password,
+            #判断私钥字符串正确性，返回私钥pkey对象
             'pkey': RSAKey.from_private_key(StringIO(pkey)) if isinstance(pkey, str) else pkey,
             'timeout': connect_timeout,
         }
@@ -99,13 +100,14 @@ class SSH:
         with self as cli:
             sftp = cli.open_sftp()
             sftp.remove(path)
-
+#解码字符串
     def _decode(self, out: bytes):
         try:
             return out.decode()
         except UnicodeDecodeError:
             return out.decode('GBK')
 
+    #with所求值的对象必须有一个__enter__()方法，一个__exit__()方法,Python的with语句是提供一个有效的机制，让代码更简练，同时在异常产生时，清理工作更简单。
     def __enter__(self):
         if self.client is not None:
             raise RuntimeError('Already connected')
