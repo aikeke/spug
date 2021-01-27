@@ -31,6 +31,7 @@ class SSH:
         return key_obj.getvalue(), 'ssh-rsa ' + key.get_base64()
 
     def add_public_key(self, public_key):
+        #format简写，！只在format中有用
         command = f'mkdir -p -m 700 ~/.ssh && \
         echo {public_key!r} >> ~/.ssh/authorized_keys && \
         chmod 600 ~/.ssh/authorized_keys'
@@ -57,6 +58,7 @@ class SSH:
             sftp.close()
 
     def exec_command(self, command, timeout=1800, environment=None):
+        #set -e告诉bash如果任何语句的执行结果不是true则应该退出
         command = 'set -e\n' + command
         with self as cli:
             chan = cli.get_transport().open_session()
