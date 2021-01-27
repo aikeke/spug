@@ -6,7 +6,7 @@ import json
 from .utils import AttrDict
 
 
-# 自定义的解析异常
+# 自定义的解析异常，BaseException所有异常的基类
 class ParseError(BaseException):
     def __init__(self, message):
         self.message = message
@@ -33,6 +33,7 @@ class Argument(object):
         if not isinstance(self.name, str):
             raise TypeError('Argument name must be string')
         if filter and not callable(self.filter):
+            #callable对于函数、方法、lambda 、 类以及实现了 __call__ 方法的类实例, 它都返回 True。
             raise TypeError('Argument filter is not callable')
 
     def parse(self, has_key, value):
@@ -122,6 +123,7 @@ class JsonParser(BaseParser):
                 data = data.decode('utf-8')
                 self.__data = json.loads(data) if data else {}
             else:
+                #通过在类中添加 __contains__ , 可以实现 Class实例化的对象 进行 in 操作
                 assert hasattr(data, '__contains__')
                 assert hasattr(data, 'get')
                 assert callable(data.get)
