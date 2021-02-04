@@ -12,6 +12,7 @@ class Setting(models.Model, ModelMixin):
 
     def __repr__(self):
         return '<Setting %r>' % self.key
-
+    
+#db_table：用来指定model对应的数据库中的表名，若不指定，Django会自动生成相应的表名，但是，自动生成的表名的可读性就不能够保证了。
     class Meta:
         db_table = 'settings'
